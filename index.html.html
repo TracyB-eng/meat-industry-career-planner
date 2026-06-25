@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NZ Meat Industry Career Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:    #C0392B;
+    --red-lt: #FAE8E6;
+    --green:  #2E7D32;
+    --green-lt:#E8F5E9;
+    --amber:  #B45309;
+    --amber-lt:#FEF3C7;
+    --blue:   #1565C0;
+    --blue-lt:#E3F0FF;
+    --purple: #6D28D9;
+    --purple-lt:#EDE9FE;
+    --text:   #1A1A1A;
+    --muted:  #5C5C5C;
+    --border: #E0DEDA;
+    --bg:     #F9F6F1;
+    --white:  #FFFFFF;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans:  'Inter', system-ui, sans-serif;
+    --radius: 10px;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: #1A1A1A;
+    color: var(--white);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.02) 40px,
+      rgba(255,255,255,0.02) 41px
+    );
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 4px;
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .hero h1 span { color: #E57368; }
+  .hero p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+    margin: 0 auto 1.75rem;
+    line-height: 1.65;
+    position: relative;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: var(--serif);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #fff;
+    display: block;
+  }
+  .hero-stat .lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── NAV TABS ── */
+  .nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 1rem 1.4rem;
+    border: none;
+    background: transparent;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--red); border-bottom-color: var(--red); }
+
+  /* ── MAIN ── */
+  main { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── SUBJECT GRID ── */
+  .subject-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .subj-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.1rem 1rem;
+  }
+  .subj-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .subj-card h3 .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .subj-card ul { list-style: none; }
+  .subj-card li {
+    font-size: 12.5px;
+    color: var(--muted);
+    padding: 4px 0;
+    border-bottom: 1px solid #F0EDE8;
+    line-height: 1.45;
+  }
+  .subj-card li:last-child { border-bottom: none; }
+  .info-box {
+    background: var(--amber-lt);
+    border: 1px solid #FDE68A;
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    font-size: 13px;
+    color: var(--amber);
+    line-height: 1.6;
+  }
+  .info-box strong { color: #92400E; }
+
+  /* ── CAREERS ACCORDION ── */
+  .careers-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .career-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .career-header {
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.12s;
+  }
+  .career-header:hover { background: var(--bg); }
+  .career-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+  .career-header-text { flex: 1; }
+  .career-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .career-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .career-badge {
+    font-size: 11px; font-weight: 500; padding: 3px 9px;
+    border-radius: 20px; white-space: nowrap;
+  }
+  .career-chevron {
+    font-size: 18px; color: var(--muted);
+    transition: transform 0.2s; user-select: none;
+  }
+  .career-chevron.open { transform: rotate(180deg); }
+  .career-body {
+    display: none;
+    padding: 0 1.1rem 1.1rem;
+    border-top: 1px solid var(--border);
+  }
+  .career-body.open { display: block; }
+  .career-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding-top: 1rem;
+  }
+  @media (max-width: 500px) { .career-details { grid-template-columns: 1fr; } }
+  .detail-block label {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px;
+  }
+  .detail-block p { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .salary-wrap { margin-top: 4px; }
+  .salary-track {
+    height: 5px; background: #E8E4DF; border-radius: 3px; margin-top: 5px; overflow: hidden;
+  }
+  .salary-fill { height: 100%; background: var(--green); border-radius: 3px; }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 28px; margin-bottom: 2rem; }
+  .timeline::before {
+    content: ''; position: absolute; left: 8px; top: 6px; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .tl-item { position: relative; margin-bottom: 1.75rem; }
+  .tl-dot {
+    position: absolute; left: -23px; top: 5px;
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--border); background: var(--white);
+  }
+  .tl-dot.done { background: var(--green); border-color: var(--green); }
+  .tl-dot.now { background: var(--red); border-color: var(--red); }
+  .tl-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+  }
+  .tl-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+  .tl-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag {
+    font-size: 11px; font-weight: 500; padding: 3px 9px;
+    border-radius: 20px; background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+  }
+
+  /* ── CARDS ROW ── */
+  .cards-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px; margin-bottom: 2rem;
+  }
+  .info-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.1rem 1.1rem;
+  }
+  .info-card .card-icon { font-size: 22px; margin-bottom: 8px; }
+  .info-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+  .info-card p { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .info-card .tag { margin-top: 8px; display: inline-block; }
+
+  /* ── PLAN PANEL ── */
+  .plan-phase { margin-bottom: 1.75rem; }
+  .phase-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  .phase-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--red); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .phase-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .phase-period { font-size: 12px; color: var(--muted); margin-left: auto; }
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 7px 0; font-size: 13px; color: var(--muted);
+    border-bottom: 1px solid #F0EDE8; line-height: 1.5;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box {
+    width: 16px; height: 16px; border: 1.5px solid var(--border);
+    border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .check-box.checked { background: var(--green); border-color: var(--green); }
+  .check-box.checked::after { content: '✓'; font-size: 10px; color: #fff; font-weight: 700; }
+  .checklist li.done span { text-decoration: line-through; color: #AAA; }
+
+  /* ── PERSONALISE PANEL ── */
+  .form-wrap {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem;
+  }
+  .form-row { margin-bottom: 1.1rem; }
+  .form-row label { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+  .form-row select, .form-row input {
+    width: 100%; padding: 8px 10px;
+    border: 1px solid var(--border); border-radius: 7px;
+    font-family: var(--sans); font-size: 13px; color: var(--text);
+    background: var(--bg); outline: none;
+  }
+  .form-row select:focus, .form-row input:focus { border-color: var(--red); }
+  .gen-btn {
+    background: var(--red); color: #fff; border: none; border-radius: 8px;
+    padding: 10px 22px; font-family: var(--sans); font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .gen-btn:hover { background: #A93226; }
+  #plan-output {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    font-size: 13px; line-height: 1.7; color: var(--muted);
+    white-space: pre-wrap; display: none; min-height: 80px;
+  }
+  #plan-output.visible { display: block; }
+  .plan-loading { color: var(--muted); font-style: italic; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1A1A1A; color: rgba(255,255,255,0.45);
+    text-align: center; padding: 1.75rem 1rem;
+    font-size: 12px; line-height: 1.7;
+  }
+  footer a { color: rgba(255,255,255,0.6); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">New Zealand</div>
+  <h1>Meat Industry<br><span>Career Planner</span></h1>
+  <p>Your complete guide from Year 12 & 13 into one of New Zealand's most important export industries — every role, every pathway, every step.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">$4B+</span><span class="lbl">Annual exports</span></div>
+    <div class="hero-stat"><span class="num">20+</span><span class="lbl">Processing plants</span></div>
+    <div class="hero-stat"><span class="num">24,000+</span><span class="lbl">Jobs nationwide</span></div>
+    <div class="hero-stat"><span class="num">8</span><span class="lbl">Career pathways</span></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="tab-btn active" onclick="showTab('subjects', this)">Year 12–13 Subjects</button>
+    <button class="tab-btn" onclick="showTab('careers', this)">Career Overview</button>
+    <button class="tab-btn" onclick="showTab('pathway', this)">Pathway Timeline</button>
+    <button class="tab-btn" onclick="showTab('plan', this)">Action Plan</button>
+    <button class="tab-btn" onclick="showTab('personalise', this)">✦ Personalise My Plan</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- SUBJECTS -->
+  <div id="tab-subjects" class="panel active">
+    <p class="section-label">Subjects to focus on in Year 12 &amp; 13</p>
+    <div class="subject-grid">
+      <div class="subj-card">
+        <h3><span class="dot" style="background:#C0392B"></span>Essential sciences</h3>
+        <ul>
+          <li>Biology — animal systems, microbiology</li>
+          <li>Chemistry — food safety & processing</li>
+          <li>Physics — machinery & refrigeration</li>
+          <li>Agriculture & Horticulture</li>
+        </ul>
+      </div>
+      <div class="subj-card">
+        <h3><span class="dot" style="background:#1565C0"></span>Maths & technology</h3>
+        <ul>
+          <li>Mathematics with Statistics</li>
+          <li>Technology / Food Technology</li>
+          <li>Digital Technologies</li>
+          <li>Design & Visual Communication</li>
+        </ul>
+      </div>
+      <div class="subj-card">
+        <h3><span class="dot" style="background:#2E7D32"></span>Business & language</h3>
+        <ul>
+          <li>English (essential for all pathways)</li>
+          <li>Business Studies</li>
+          <li>Economics</li>
+          <li>Accounting</li>
+        </ul>
+      </div>
+      <div class="subj-card">
+        <h3><span class="dot" style="background:#B45309"></span>Practical / vocational</h3>
+        <ul>
+          <li>Gateway programme — meat industry</li>
+          <li>STAR courses in food production</li>
+          <li>Home Economics / Food</li>
+          <li>Health & Physical Education</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-box">
+      <strong>NCEA tip:</strong> Aim for NCEA Level 2 including all literacy and numeracy requirements. For university entry you'll need University Entrance — 14 credits in three approved Level 3 subjects. Sciences and maths are the most valued by universities offering food technology, veterinary and agricultural programmes.
+    </div>
+  </div>
+
+  <!-- CAREERS -->
+  <div id="tab-careers" class="panel">
+    <p class="section-label">Careers within the NZ meat industry — click any role to expand</p>
+    <div class="careers-grid" id="accordion">
+
+      <div class="career-card">
+        <div class="career-header" onclick="toggleCareer(this)">
+          <div class="career-icon" style="background:#FAE8E6">🔪</div>
+          <div class="career-header-text">
+            <div class="career-title">Process worker / boner / slicer</div>
+            <div class="career-sub">Floor operations · immediate entry</div>
+          </div>
+          <span class="career-badge" style="background:var(--green-lt);color:var(--green)">Entry level</span>
+          <span class="career-chevron">›</span>
+        </div>
+        <div class="career-body">
+          <div class="career-details">
+            <div class="detail-block"><label>What you do</label><p>Slaughter, dress, bone, trim and portion carcasses on a processing chain. Fast-paced, physically demanding team environment.</p></div>
+            <div class="detail-block"><label>How to enter</label><p>No formal qualifications required — full training provided on the job. A Gateway placement at school is a great head start.</p></div>
+            <div class="detail-block"><label>Salary range</label>
+              <div class="salary-wrap"><p>$28–$42/hr (skilled operators). Union-negotiated rates apply.</p><div class="salary-track"><div class="salary-fill" style="width:32%"></div></div></div>
+            </div>
+            <div class="detail-block"><label>Progression</label><p>Floor supervisor → shift manager → production manager. Also a strong step into quality assurance roles.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="career-header" onclick="toggleCareer(this)">
+          <div class="career-icon" style="background:#E8F5E9">🥩</div>
+          <div class="career-header-text">
+            <div class="career-title">Butcher / retail butcher</div>
+            <div class="career-sub">Retail & specialty · apprenticeship</div>
+          </div>
+          <span class="career-badge" style="background:var(--blue-lt);color:var(--blue)">Apprenticeship</span>
+          <span class="career-chevron">›</span>
+        </div>
+        <div class="career-body">
+          <div class="career-details">
+            <div class="detail-block"><label>What you do</label><p>Cut, prepare and present meat for retail customers. Involves customer service, merchandising, and in-depth product knowledge.</p></div>
+            <div class="detail-block"><label>How to enter</label><p>3-year Butchery Apprenticeship — earn while you learn. Can start straight from school; NCEA Level 2 preferred.</p></div>
+            <div class="detail-block"><label>Salary range</label>
+              <div class="salary-wrap"><p>$50,000–$85,000. Master butchers running their own shops can earn significantly more.</p><div class="salary-track"><div class="salary-fill" style="width:48%"></div></div></div>
+            </div>
+            <div class="detail-block"><label>Progression</label><p>Head butcher → butchery manager → own specialty shop, deli, or charcuterie business.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="career-header" onclick="toggleCareer(this)">
+          <div class="career-icon" style="background:var(--purple-lt)">🔬</div>
+          <div class="career-header-text">
+            <div class="career-title">Food technologist</div>
+            <div class="career-sub">R&D · product development · food science</div>
+          </div>
+          <span class="career-badge" style="background:var(--purple-lt);color:var(--purple)">University degree</span>
+          <span class="career-chevron">›</span>
+        </div>
+        <div class="career-body">
+          <div class="career-details">
+            <div class="detail-block"><label>What you do</label><p>Develop new meat products, improve processing methods, manage food safety, packaging and shelf life. Lab and computer work combined.</p></div>
+            <div class="detail-block"><label>How to enter</label><p>Bachelor of Food Technology (4 years + compulsory Honours). Massey, AUT, Lincoln and Waikato all offer this.</p></div>
+            <div class="detail-block"><label>Salary range</label>
+              <div class="salary-wrap"><p>$49,000–$148,000. On NZ's long-term skill shortage list — excellent demand.</p><div class="salary-track"><div class="salary-fill" style="width:72%"></div></div></div>
+            </div>
+            <div class="detail-block"><label>Progression</label><p>Senior food technologist → R&D manager → technical director. Strong international career potential.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="career-header" onclick="toggleCareer(this)">
+          <div class="career-icon" style="background:var(--amber-lt)">📋</div>
+          <div class="career-header-text">
+            <div class="career-title">Quality assurance / food safety officer</div>
+            <div class="career-sub">Compliance · hygiene · export standards</div>
+          </div>
+          <span class="career-badge" style="background:var(--amber-lt);color:var(--amber)">Diploma or degree</span>
+          <span class="career-chevron">›</span>
+        </div>
+        <div class="career-body">
+          <div class="career-details">
+            <div class="detail-block"><label>What you do</label><p>Monitor and enforce hygiene, food safety, and compliance standards throughout the plant to meet NZ and international export requirements.</p></div>
+            <div class="detail-block"><label>How to enter</label><p>NZ Certificate in Food Processing (Level 4) via polytech, or a food science / technology degree. Some move up from the processing floor.</p></div>
+            <div class="detail-block"><label>Salary range</label>
+              <div class="salary-wrap"><p>$55,000–$95,000 depending on plant size and level of seniority.</p><div class="salary-track"><div class="salary-fill" style="width:53%"></div></div></div>
+            </div>
+            <div class="detail-block"><label>Progression</label><p>QA supervisor → QA manager → regulatory affairs specialist or compliance director.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="career-header" onclick="toggleCareer(this)">
+          <div class="career-icon" style="background:var(--green-lt)">🐄</div>
+          <div class="career-header-text">
+            <div class="career-title">Livestock / procurement officer</div>
+            <div class="career-sub">Farming liaison · supply chain · rural</div>
+          </div>
+          <span class="career-badge" style="background:var(--amber-lt);color:var(--amber)">Diploma or degree</span>
+          <span class="career-chevron">›</span>
+        </div>
+        <div class="career-body">
+          <div class="career-details">
+            <div class="detail-block"><label>What you do</label><p>Work with farmers, assess and source livestock, draft animals at yards, and liaise between farmers and processing companies.</p></div>
+            <div class="detail-block"><label>How to enter</label><p>NZ Diploma in Agribusiness Management, or a degree in Agriculture or Rural Valuation. Farm experience is highly valued.</p></div>
+            <div class="detail-block"><label>Salary range</label>
+              <div class="salary-wrap"><p>$60,000–$100,000+. Includes company vehicle, phone and travel allowances.</p><div class="salary-track"><div class="salary-fill" style="width:57%"></div></div></div>
+            </div>
+            <div class="detail-block"><label>Progression</label><p>Senior livestock rep → regional procurement manager → supply chain director.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="career-header" onclick="toggleCareer(this)">
+          <div class="career-icon" style="background:var(--red-lt)">🩺</div>
+          <div class="career-header-text">
+            <div class="career-title">Veterinarian (meat hygiene / official vet)</div>
+            <div class="career-sub">Animal health · MPI · export certification</div>
+          </div>
+          <span class="career-badge" style="background:var(--purple-lt);color:var(--purple)">University degree</span>
+          <span class="career-chevron">›</span>
+        </div>
+        <div class="career-body">
+          <div class="career-details">
+            <div class="detail-block"><label>What you do</label><p>Inspect animals before and after slaughter to certify meat is safe for human consumption and meets NZ and international export standards.</p></div>
+            <div class="detail-block"><label>How to enter</label><p>BVSc from Massey University (5 years). Highly competitive entry — strong marks in Biology and Chemistry essential.</p></div>
+            <div class="detail-block"><label>Salary range</label>
+              <div class="salary-wrap"><p>$90,000–$150,000+. Official vets for MPI are among the best-compensated roles.</p><div class="salary-track"><div class="salary-fill" style="width:82%"></div></div></div>
+            </div>
+            <div class="detail-block"><label>Progression</label><p>Senior official vet → MPI regulatory roles → international food safety consultancy.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="career-header" onclick="toggleCareer(this)">
+          <div class="career-icon" style="background:var(--blue-lt)">📦</div>
+          <div class="career-header-text">
+            <div class="career-title">Sales, export & marketing</div>
+            <div class="career-sub">International trade · business development</div>
+          </div>
+          <span class="career-badge" style="background:var(--blue-lt);color:var(--blue)">Degree or experience</span>
+          <span class="career-chevron">›</span>
+        </div>
+        <div class="career-body">
+          <div class="career-details">
+            <div class="detail-block"><label>What you do</label><p>Sell NZ meat to buyers in Japan, UK, Europe, China and the Middle East. Manage customer relationships, pricing and export logistics.</p></div>
+            <div class="detail-block"><label>How to enter</label><p>Bachelor of Commerce, Business, or International Trade. Language skills (Japanese, Mandarin) are a significant advantage.</p></div>
+            <div class="detail-block"><label>Salary range</label>
+              <div class="salary-wrap"><p>$65,000–$130,000+. Often includes international travel and commission.</p><div class="salary-track"><div class="salary-fill" style="width:65%"></div></div></div>
+            </div>
+            <div class="detail-block"><label>Progression</label><p>Account manager → export manager → GM of sales. Senior roles at ANZCO, Silver Fern Farms, Alliance Group.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="career-header" onclick="toggleCareer(this)">
+          <div class="career-icon" style="background:var(--amber-lt)">⚙️</div>
+          <div class="career-header-text">
+            <div class="career-title">Engineer (mechanical / refrigeration)</div>
+            <div class="career-sub">Plant operations · cold chain · automation</div>
+          </div>
+          <span class="career-badge" style="background:var(--purple-lt);color:var(--purple)">Degree or trades</span>
+          <span class="career-chevron">›</span>
+        </div>
+        <div class="career-body">
+          <div class="career-details">
+            <div class="detail-block"><label>What you do</label><p>Maintain, repair and upgrade processing machinery, cold chain refrigeration systems, and plant automation technology.</p></div>
+            <div class="detail-block"><label>How to enter</label><p>NZ Certificate in Engineering (Level 4) or BE degree. A refrigeration trades apprenticeship is also a direct route in.</p></div>
+            <div class="detail-block"><label>Salary range</label>
+              <div class="salary-wrap"><p>$65,000–$120,000+. Refrigeration engineers are in particularly strong demand.</p><div class="salary-track"><div class="salary-fill" style="width:63%"></div></div></div>
+            </div>
+            <div class="detail-block"><label>Progression</label><p>Senior engineer → engineering manager → plant operations director.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PATHWAY TIMELINE -->
+  <div id="tab-pathway" class="panel">
+    <p class="section-label">Your pathway from school into the industry</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot now"></div>
+        <div class="tl-label">Now — Year 12 & 13</div>
+        <div class="tl-title">Build foundations at school</div>
+        <div class="tl-body">Focus on NCEA subjects in science, maths and agriculture. Look for a Gateway work placement at a meat processing plant or butchery. Complete STAR courses in food production if available. Talk to your careers adviser and visit careers.govt.nz.</div>
+        <div class="tl-tags">
+          <span class="tag">NCEA Level 2+</span>
+          <span class="tag">Gateway programme</span>
+          <span class="tag">STAR courses</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-label">After Year 13 — Vocational route</div>
+        <div class="tl-title">Apprenticeship, polytech or straight to work</div>
+        <div class="tl-body">Start a Butchery Apprenticeship (3 years, earn while you learn) or enrol in a Level 3–4 NZ Certificate in Food Processing at EIT, Wintec, NMIT or SIT. Alternatively, apply directly to ANZCO, Silver Fern Farms, Alliance Group or AFFCO for entry-level roles — full training is provided.</div>
+        <div class="tl-tags">
+          <span class="tag">Butchery apprenticeship</span>
+          <span class="tag">NZ Certificate Level 3–4</span>
+          <span class="tag">Direct employment</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-label">After Year 13 — University route</div>
+        <div class="tl-title">Enrol in a relevant degree</div>
+        <div class="tl-body">For food technology, science or veterinary roles: apply to Massey University (Palmerston North/Auckland), Lincoln, AUT or Waikato. University Entrance required — strong marks in Biology, Chemistry and Maths are essential for competitive programmes.</div>
+        <div class="tl-tags">
+          <span class="tag">Massey University</span>
+          <span class="tag">Lincoln University</span>
+          <span class="tag">AUT / Waikato</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-label">Years 2–4</div>
+        <div class="tl-title">Gain experience & specialise</div>
+        <div class="tl-body">Polytech graduates enter the workforce with a Level 4–5 qualification. University students complete industry internships. Apprentices finish their qualification and may become multi-skilled operators or floor supervisors. The industry rewards people who keep learning.</div>
+        <div class="tl-tags">
+          <span class="tag">Industry internships</span>
+          <span class="tag">Graduate programmes</span>
+          <span class="tag">On-the-job training</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-label">Years 5–10+</div>
+        <div class="tl-title">Senior, specialist & leadership roles</div>
+        <div class="tl-body">Progress into quality management, food science leadership, livestock procurement, export sales or plant engineering. NZ red meat exports over $4B annually — skilled professionals at every level are in strong, ongoing demand across the country.</div>
+        <div class="tl-tags">
+          <span class="tag">Management</span>
+          <span class="tag">Global export roles</span>
+          <span class="tag">Consultancy</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-label">Industry at a glance</p>
+    <div class="cards-row">
+      <div class="info-card">
+        <div class="card-icon">🏭</div>
+        <h4>Major employers</h4>
+        <p>Silver Fern Farms, ANZCO Foods, Alliance Group, AFFCO (Talley's), Blue Sky Meats, Progressive Meats</p>
+        <span class="tag">20+ plants nationwide</span>
+      </div>
+      <div class="info-card">
+        <div class="card-icon">🌏</div>
+        <h4>Export markets</h4>
+        <p>China, USA, UK, Japan, Middle East. NZ is one of the world's leading red meat exporters — $4B+ per year.</p>
+        <span class="tag">Global careers</span>
+      </div>
+      <div class="info-card">
+        <div class="card-icon">📈</div>
+        <h4>Growth areas</h4>
+        <p>Food safety, sustainability, value-added products, cold chain logistics, and plant automation & robotics.</p>
+        <span class="tag">Future-proof skills</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION PLAN -->
+  <div id="tab-plan" class="panel">
+    <p class="section-label">12-month action plan — tick off as you go</p>
+
+    <div class="plan-phase">
+      <div class="phase-header">
+        <div class="phase-num">1</div>
+        <div class="phase-title">Explore & decide</div>
+        <span class="phase-period">Months 1–2</span>
+      </div>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Visit careers.govt.nz and explore meat industry roles in depth</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Talk to your school careers adviser about Gateway placements in meat processing</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Decide between the vocational (polytech/apprenticeship) or university pathway</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Contact ANZCO Foods, Silver Fern Farms or Alliance Group to ask about plant visits or school programmes</span></li>
+      </ul>
+    </div>
+
+    <div class="plan-phase">
+      <div class="phase-header">
+        <div class="phase-num">2</div>
+        <div class="phase-title">Plan your subjects</div>
+        <span class="phase-period">Months 3–4</span>
+      </div>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Confirm Year 13 subject choices: Biology, Chemistry, Maths — or Agriculture if available</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Apply for the Gateway programme or a STAR food processing course at school</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>If university path: research Massey, Lincoln, AUT or Waikato open days and entry requirements</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>If vocational path: contact your local polytech (EIT, Wintec, NMIT or SIT) for Level 3–4 food processing programmes</span></li>
+      </ul>
+    </div>
+
+    <div class="plan-phase">
+      <div class="phase-header">
+        <div class="phase-num">3</div>
+        <div class="phase-title">Get real experience</div>
+        <span class="phase-period">Months 5–8</span>
+      </div>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Complete your Gateway placement at a meat plant if enrolled</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Apply for holiday or part-time work at a local processing plant or butchery</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Attend a Food Technology or Agriculture open day at a university campus</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Look into Apprenticeship Boost subsidies at govt.nz if considering a butchery apprenticeship</span></li>
+      </ul>
+    </div>
+
+    <div class="plan-phase">
+      <div class="phase-header">
+        <div class="phase-num">4</div>
+        <div class="phase-title">Apply for your next step</div>
+        <span class="phase-period">Months 9–12</span>
+      </div>
+      <ul class="checklist">
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Submit university applications via NZUAC (opens October for the following year)</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Apply to polytech programmes — most have rolling enrolment, apply early for February start</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Research graduate or cadet programmes at ANZCO, Silver Fern Farms or Alliance Group</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Set up a LinkedIn profile and connect with people already working in the meat industry</span></li>
+        <li><div class="check-box" onclick="toggleCheck(this)"></div><span>Apply for Student Allowance or StudyLink funding ahead of your start date</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PERSONALISE -->
+  <div id="tab-personalise" class="panel">
+    <p class="section-label">Generate a personalised career plan</p>
+    <div class="form-wrap">
+      <div class="form-row">
+        <label for="year-level">Current year level</label>
+        <select id="year-level">
+          <option value="">Select your year level...</option>
+          <option>Year 12</option>
+          <option>Year 13</option>
+          <option>Just finished Year 13</option>
+          <option>Other / not sure</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="career-interest">Career area that interests you most</label>
+        <select id="career-interest">
+          <option value="">Select a career...</option>
+          <option>Food technologist / R&D</option>
+          <option>Butcher / apprenticeship</option>
+          <option>Quality assurance / food safety</option>
+          <option>Livestock / procurement officer</option>
+          <option>Veterinarian (official vet)</option>
+          <option>Sales, export & marketing</option>
+          <option>Engineering / refrigeration</option>
+          <option>Process worker → supervisor</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="strengths">Your strengths or favourite subjects (optional)</label>
+        <input type="text" id="strengths" placeholder="e.g. Biology, working with animals, problem-solving...">
+      </div>
+      <button class="gen-btn" onclick="generatePlan()">Generate my plan →</button>
+    </div>
+    <div id="plan-output"></div>
+  </div>
+
+</main>
+
+<footer>
+  <p>NZ Meat Industry Career Planner · Built for students, school leavers and career changers</p>
+  <p style="margin-top:6px">Key resources: <a href="https://www.careers.govt.nz" target="_blank">careers.govt.nz</a> · <a href="https://www.anzcofoods.com/careers" target="_blank">ANZCO Foods</a> · <a href="https://www.silverfernfarms.com/careers" target="_blank">Silver Fern Farms</a> · <a href="https://www.alliancegroupcareers.co.nz" target="_blank">Alliance Group</a></p>
+</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleCareer(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.career-chevron');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.career-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.career-chevron').forEach(c => { c.classList.remove('open'); c.textContent = '›'; });
+  if (!isOpen) {
+    body.classList.add('open');
+    chevron.classList.add('open');
+    chevron.textContent = '‹';
+  }
+}
+
+function toggleCheck(box) {
+  box.classList.toggle('checked');
+  const li = box.parentElement;
+  li.classList.toggle('done');
+}
+
+async function generatePlan() {
+  const year = document.getElementById('year-level').value;
+  const career = document.getElementById('career-interest').value;
+  const strengths = document.getElementById('strengths').value;
+
+  if (!year || !career) {
+    alert('Please select your year level and career interest first.');
+    return;
+  }
+
+  const output = document.getElementById('plan-output');
+  output.className = 'visible';
+  output.innerHTML = '<span class="plan-loading">Generating your personalised plan...</span>';
+
+  const prompt = `You are a friendly NZ careers adviser specialising in the meat and food processing industry. Generate a clear, practical, personalised career plan for the following student:
+
+Year level: ${year}
+Career interest: ${career}
+Strengths/subjects: ${strengths || 'Not specified'}
+
+Write a personalised plan with these sections:
+1. Why this career suits you (2–3 sentences based on the career chosen)
+2. Key NCEA subjects to focus on right now
+3. Step-by-step pathway into this specific career (3–5 steps from school to employed)
+4. Specific NZ universities or polytechs to consider with the exact qualification name
+5. Top 3 actions to take in the next 3 months
+6. Expected salary range when starting out and after 5 years
+
+Keep it warm, direct and practical. Use plain language — this is for a school student. Format using clear section headings. Keep it under 400 words.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content.map(b => b.text || '').join('');
+    output.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/^## (.*)/gm, '<h3 style="font-size:14px;font-weight:600;margin:14px 0 6px;color:#1A1A1A">$1</h3>').replace(/^# (.*)/gm, '<h2 style="font-size:16px;font-weight:600;margin:14px 0 6px;color:#1A1A1A">$1</h2>');
+  } catch (err) {
+    output.innerHTML = '<span style="color:#C0392B">Sorry, something went wrong generating your plan. Please try again.</span>';
+  }
+}
+</script>
+</body>
+</html>
